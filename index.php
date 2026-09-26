@@ -2,12 +2,12 @@
 
 <?php
 include ruta('head');
-include ruta('navbar');
 ?>
 
 <link rel="stylesheet" href="<?php echo url('index_estilos');?>">
 
 <?php
+include ruta('navbar');
 include ruta('hero');
 include ruta('noticias_index');
 include ruta('actividades_index');

@@ -1,10 +1,52 @@
-/* assets/js/app.js */
-
 // nav: menú mobile + resaltado de sección activa
 const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
 navToggle.addEventListener('click', () => navMenu.classList.toggle('open'));
-document.querySelectorAll('.navlink').forEach(l => l.addEventListener('click', () => navMenu.classList.remove('open')));
+document.querySelectorAll('.navlink, .drop-panel a').forEach(l => l.addEventListener('click', () => navMenu.classList.remove('open')));
+
+// dropdown por sección: click para mobile/teclado (en desktop además abre con :hover via CSS)
+document.querySelectorAll('.has-drop').forEach(item => {
+  const trigger = item.querySelector('.drop-trigger');
+  trigger.addEventListener('click', () => {
+    const willOpen = !item.classList.contains('open');
+    document.querySelectorAll('.has-drop.open').forEach(other => {
+      if (other !== item) { other.classList.remove('open'); other.querySelector('.drop-trigger').setAttribute('aria-expanded', 'false'); }
+    });
+    item.classList.toggle('open', willOpen);
+    trigger.setAttribute('aria-expanded', willOpen);
+  });
+});
+document.querySelectorAll('.drop-panel a[data-filter]').forEach(link => {
+  link.addEventListener('click', () => {
+    const f = link.dataset.filter;
+    const tab = document.querySelector(`#tabs .tab-btn[data-filter="${f}"]`);
+    const chip = document.querySelector(`#prodFilters .chip[data-cat="${f}"]`);
+    if (tab) tab.click();
+    if (chip) chip.click();
+  });
+});
+document.addEventListener('click', (e) => {
+  document.querySelectorAll('.has-drop.open').forEach(item => {
+    if (!item.contains(e.target)) {
+      item.classList.remove('open');
+      item.querySelector('.drop-trigger').setAttribute('aria-expanded', 'false');
+    }
+  });
+});
+
+// aparición suave de tarjetas al entrar en pantalla
+const reveal = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      reveal.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i % 4) * 60 + 'ms';
+  reveal.observe(el);
+});
 
 const sections = ['noticias','actividades','produccion','biblioteca','educativo','newsletter'].map(id => document.getElementById(id));
 const links = document.querySelectorAll('.navlink');

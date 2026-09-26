@@ -1,4 +1,3 @@
-/* assets/css/style.css */ 
 
   :root{
     --navy:#0B3D91;
@@ -29,11 +28,30 @@
   nav a:hover{opacity:1}
   nav a.active{opacity:1;border-color:var(--coral);color:var(--navy)}
   .navtoggle{display:none;background:none;border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:1rem;cursor:pointer}
+
+  /* NAV con dropdown por sección */
+  .has-drop{position:relative}
+  .drop-trigger{background:none;border:none;font-family:inherit;font-size:.92rem;color:var(--ink);opacity:.75;cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:4px 2px}
+  .drop-trigger:hover{opacity:1}
+  .drop-trigger .caret{font-size:.65rem;transition:transform .2s}
+  .has-drop.open .drop-trigger .caret{transform:rotate(180deg)}
+  .drop-panel{position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%) translateY(6px);min-width:210px;background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 16px 34px rgba(11,61,145,.14);padding:8px;display:flex;flex-direction:column;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .16s ease, transform .16s ease;z-index:10}
+  .has-drop:hover .drop-panel, .has-drop.open .drop-panel{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+  .drop-panel a{display:block;font-size:.87rem;color:var(--ink);text-decoration:none;padding:8px 10px;border-radius:4px}
+  .drop-panel a:hover{background:var(--paper);color:var(--sea)}
   @media(max-width:760px){
-    nav ul{position:fixed;top:60px;left:0;right:0;background:var(--paper);flex-direction:column;padding:14px 24px;border-bottom:1px solid var(--line);display:none;gap:12px}
+    nav ul{position:fixed;top:60px;left:0;right:0;background:var(--paper);flex-direction:column;padding:14px 24px;border-bottom:1px solid var(--line);display:none;gap:4px;max-height:80vh;overflow-y:auto}
     nav ul.open{display:flex}
     .navtoggle{display:block}
+    .drop-trigger{width:100%;justify-content:space-between;padding:10px 2px}
+    .drop-panel{position:static;min-width:auto;transform:none;box-shadow:none;border:none;padding:0 0 6px 14px;display:none;opacity:1;visibility:visible;pointer-events:auto}
+    .has-drop.open .drop-panel{display:flex}
   }
+
+  /* reveal-on-scroll para tarjetas */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease, transform .55s ease}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+  @media (prefers-reduced-motion: reduce){.reveal{opacity:1;transform:none;transition:none}}
 
   /* HERO */
   .hero{position:relative;overflow:hidden;padding:64px 0 40px;background:var(--navy)}
